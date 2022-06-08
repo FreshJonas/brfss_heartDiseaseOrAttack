@@ -1,5 +1,5 @@
+import os
 import pandas as pd
-import csv
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -15,16 +15,16 @@ HIDDENLAYERS = [1, 2, 3]
 HIDDENLAYERSNODES = [10, 20, 50]    
 SOLVER = ['adam', 'sgd']
 
-hyp_filename = 'balanced_accuracies_scaling_minmax_imputed.csv'
-hyp_scaler = SCALING[2]
-
-df = pd.read_csv('C:\\Users\\brand\\Desktop\\project\\2015_cleaned_and_imputed.csv')
-# df = pd.read_csv('C:\\Users\\brand\\Desktop\\project\\2015_cleaned.csv')
-
+# relative path to data directory
+datapath = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
+dfpath = os.path.join(datapath, '2015_cleaned_droppedNaN.csv')
+resultspath = os.path.join(datapath, '2015_results_droppedNaN.csv')
 
 
 
 
+# read csv
+df = pd.read_csv(dfpath)
 
 # Prepare X and y
 X = df.drop('HeartDiseaseorAttack', axis=1)
@@ -37,49 +37,50 @@ X_resampled, y_resampled = rus.fit_resample(X, y)
 # split into train and test
 X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, random_state=1, test_size=0.2)
 
-# SCALING
-if hyp_scaler != 'false':
-    if hyp_scaler == 'standard':
-        scaler = StandardScaler()
-    if hyp_scaler == 'minmax':
-        scaler = MinMaxScaler()
-    X_train = scaler.fit_transform(X_train)
-    X_test = scaler.fit_transform(X_test)
-
-
 result_df = pd.DataFrame(columns=['Scaler', 'ActFunc', 'HiddenArch', 'Solver', 'MaxIter', 'bal_acc'])
 
-for hyp_actfunc in ACTFUNC:
+for hyp_scaler in SCALING:
+    
+    # SCALING
+    if hyp_scaler != 'false':
+        if hyp_scaler == 'standard':
+            scaler = StandardScaler()
+        if hyp_scaler == 'minmax':
+            scaler = MinMaxScaler()
+        X_train = scaler.fit_transform(X_train)
+        X_test = scaler.fit_transform(X_test)
 
-    for hyp_hiddenlayers in HIDDENLAYERS:
+    for hyp_actfunc in ACTFUNC:
 
-        for hyp_hiddenlayersnodes in HIDDENLAYERSNODES:
-        
-            # create hidden layer architecture tupel
-            hidden_layers_architecture_tupel = (hyp_hiddenlayersnodes,)
-            for i in range(hyp_hiddenlayers - 1):
-                hidden_layers_architecture_tupel =  hidden_layers_architecture_tupel + (hyp_hiddenlayersnodes,)
+        for hyp_hiddenlayers in HIDDENLAYERS:
 
-            for hyp_solver in SOLVER:
-
-                for hyp_maxiterations in MAXITERATIONS:
+            for hyp_hiddenlayersnodes in HIDDENLAYERSNODES:
             
-                    classifier = MLPClassifier(hidden_layer_sizes=hidden_layers_architecture_tupel, solver=hyp_solver, max_iter=hyp_maxiterations, activation=hyp_actfunc, random_state=1)
-                    classifier.fit(X_train, y_train)
+                # create hidden layer architecture tupel
+                hidden_layers_architecture_tupel = (hyp_hiddenlayersnodes,)
+                for i in range(hyp_hiddenlayers - 1):
+                    hidden_layers_architecture_tupel =  hidden_layers_architecture_tupel + (hyp_hiddenlayersnodes,)
 
-                    y_pred = classifier.predict(X_test)
+                for hyp_solver in SOLVER:
 
-                    bal_acc = balanced_accuracy_score(y_test, y_pred)
+                    for hyp_maxiterations in MAXITERATIONS:
+                
+                        classifier = MLPClassifier(hidden_layer_sizes=hidden_layers_architecture_tupel, solver=hyp_solver, max_iter=hyp_maxiterations, activation=hyp_actfunc, random_state=1)
+                        classifier.fit(X_train, y_train)
 
-                    # print(f'scaler: {hyp_scaler}')
-                    # print(f'activation function: {hyp_actfunc}')
-                    # print(f'architecture: {hidden_layers_architecture_tupel}')
-                    # print(f'solver: {hyp_solver}')
-                    # print(f'max iterations: {hyp_maxiterations}')
-                    # print(f'bal_acc: {bal_acc}')
-                    # print()
+                        y_pred = classifier.predict(X_test)
 
-                    valueDict = {'Scaler': hyp_scaler, 'ActFunc': hyp_actfunc, 'HiddenArch': hidden_layers_architecture_tupel, 'Solver': hyp_solver, 'MaxIter': hyp_maxiterations, 'bal_acc': bal_acc}
-                    result_df = result_df.append(valueDict, ignore_index=True)
+                        bal_acc = balanced_accuracy_score(y_test, y_pred)
 
-result_df.to_csv(hyp_filename)
+                        # print(f'scaler: {hyp_scaler}')
+                        # print(f'activation function: {hyp_actfunc}')
+                        # print(f'architecture: {hidden_layers_architecture_tupel}')
+                        # print(f'solver: {hyp_solver}')
+                        # print(f'max iterations: {hyp_maxiterations}')
+                        # print(f'bal_acc: {bal_acc}')
+                        # print()
+
+                        valueDict = {'Scaler': hyp_scaler, 'ActFunc': hyp_actfunc, 'HiddenArch': hidden_layers_architecture_tupel, 'Solver': hyp_solver, 'MaxIter': hyp_maxiterations, 'bal_acc': bal_acc}
+                        result_df = result_df.append(valueDict, ignore_index=True)
+
+result_df.to_csv(resultspath)
