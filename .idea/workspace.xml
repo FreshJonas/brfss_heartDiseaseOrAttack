@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="507aa4b5-91ee-4d07-b416-128f848e094f" name="Default Changelist" comment="knn" />
+    <list default="true" id="507aa4b5-91ee-4d07-b416-128f848e094f" name="Default Changelist" comment="knn">
+      <change beforePath="$PROJECT_DIR$/code/knn/knn.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/code/knn/knn.ipynb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,7 +83,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654702911085</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="knn">
+      <created>1654703248911</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1654703248911</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
