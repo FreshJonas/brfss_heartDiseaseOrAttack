@@ -1,4 +1,8 @@
-data/2015.csv
-pics
+# directories
+pics/*
 .idea/*
 tmp/*
+
+# files
+data/2015.csv
+workspace.xml
