@@ -1,3 +1,4 @@
 data/2015.csv
 pics
-.idea
+.idea/*
+tmp/*
