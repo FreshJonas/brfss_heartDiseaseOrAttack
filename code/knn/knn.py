@@ -42,7 +42,7 @@ y = np.array(df['HeartDiseaseorAttack'])
 We performed undersampling because our target is not balanced. 
 """
 
-rus = RandomUnderSampler()
+rus = RandomUnderSampler(random_state=1)
 X_resampled, y_resampled = rus.fit_resample(X, y)
 
 
@@ -94,7 +94,7 @@ metric = random_search.best_params_.get('metric')
 
 accuracy_list =[]
 for i in range(100):
-
+  X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2)
   knn = KNeighborsClassifier(n_neighbors=best_k, metric = metric)
   knn.fit(X_train, y_train)
   prediction = knn.predict(X_test)
@@ -110,23 +110,24 @@ print("Balanced Accuracy Score is: ", np.mean(accuracy_list))
 
 from sklearn.metrics import plot_confusion_matrix
 plot_confusion_matrix(knn, X_test, y_test)
-print(plt.show())
+plt.show()
 
 collector = []
 for k in range(1, 20, 2):
   accuracy_list = []
   for j in range(1, 10): # I run 10 times and take the mean accuracy
+    X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2)
     knn = KNeighborsClassifier(n_neighbors = k)
     knn.fit(X_train, y_train)
     prediction = knn.predict(X_test)
-    accuracy = accuracy_score(y_test, prediction)
+    accuracy = balanced_accuracy_score(y_test, prediction)
     accuracy_list.append(accuracy)
   collector.append({"k": k,
                     "accuracy": round(np.mean(accuracy_list), 3).astype('float64')})
 
-accuracy_scores_minMax_df = pd.DataFrame(collector)
+accuracy_scores_df = pd.DataFrame(collector)
 
-plt.plot(accuracy_scores_minMax_df['k'], accuracy_scores_minMax_df['accuracy'])
+plt.plot(accuracy_scores_df['k'], accuracy_scores_df['accuracy'])
 plt.grid(True)
-print(plt.show())
+plt.show()
 print("\nThe End")
