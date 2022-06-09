@@ -6,5 +6,5 @@ tmp/*
 # files
 data/2015.csv
 data/2015_cleaned_imputedNaN.csv
-data/2015_results_droppedNaN.csv
+data/2015_results*
 workspace.xml
