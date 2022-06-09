@@ -4,6 +4,7 @@ pics/*
 tmp/*
 
 # files
+data/
 data/2015.csv
 data/2015_cleaned_imputedNaN.csv
 data/2015_results*
