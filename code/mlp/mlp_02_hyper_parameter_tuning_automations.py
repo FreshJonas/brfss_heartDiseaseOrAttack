@@ -66,20 +66,23 @@ for hyp_actfunc in ACTFUNC:
             for hyp_solver in SOLVER:
 
                 for hyp_maxiterations in MAXITERATIONS:
-            
-                    # classifier = MLPClassifier(hidden_layer_sizes=hidden_layers_architecture_tupel, solver=hyp_solver, max_iter=hyp_maxiterations, activation=hyp_actfunc, random_state=1)
-                    # classifier.fit(X_train, y_train)
+                    
+                    # Create MLP Classifier
+                    classifier = MLPClassifier(hidden_layer_sizes=hidden_layers_architecture_tupel, solver=hyp_solver, max_iter=hyp_maxiterations, activation=hyp_actfunc, random_state=1)
 
-                    # y_pred = classifier.predict(X_test)
+                    # Fitting MLP Classifier to data
+                    classifier.fit(X_train, y_train)
 
-                    # bal_acc = balanced_accuracy_score(y_test, y_pred)
-                    bal_acc = 0.5
+                    # Predicting test data
+                    y_pred = classifier.predict(X_test)
 
-                    # valueDict = {'ActFunc': hyp_actfunc, 'HiddenArch': hidden_layers_architecture_tupel, 'Solver': hyp_solver, 'MaxIter': hyp_maxiterations, 'bal_acc': bal_acc}
-                    # result_df = result_df.append(valueDict, ignore_index=True)
-                    # pd.concat(valueDict, result_df, ignore_index=True, sort=False)
+                    # Calculating balanced accuracy
+                    bal_acc = balanced_accuracy_score(y_test, y_pred)
+
+                    # Appending results to result dataframe
                     result_df.loc[len(result_df.index)] = [hyp_actfunc, hidden_layers_architecture_tupel, hyp_solver, hyp_maxiterations, bal_acc]
 
+                    # Print current run with result
                     valueDict = {'ActFunc': hyp_actfunc, 'HiddenArch': hidden_layers_architecture_tupel, 'Solver': hyp_solver, 'MaxIter': hyp_maxiterations, 'bal_acc': bal_acc}
                     print(valueDict)
 
