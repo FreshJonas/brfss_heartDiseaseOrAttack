@@ -43,9 +43,10 @@ print(round((((df.isnull().sum()).sum() / np.product(df.shape)) * 100), 2))
 
 ############################ ATENTION ################################################
 """We recommend to reduce the database for testing purposes. Please uncomment the code below to reduce the dataset, 
-otherwise the time required to run the code increases considerably. """
-#df = df.loc[0:2500]
-#print(f"Reduced dataset: {df.shape}")
+otherwise the time required to run the code increases considerably or the computer might crushed. We recommend to run 
+the complete dataset in google-CoLab since it provides more computer power. """
+df = df.loc[0:2500]
+print(f"Reduced dataset: {df.shape}")
 ########################################################################################
 
 X = df.drop(columns=['HeartDiseaseorAttack'])
@@ -220,6 +221,7 @@ for alpha in ccp_alphas:
 
 alpha_results = pd.DataFrame(stat_values, columns=['alpha', 'mean_accuracy', 'std'])
 alpha_results.plot(x = 'alpha', y='mean_accuracy', yerr='std', marker='o', linestyle='--')
+plt.show()
 
 print("\nAlpha Results are")
 print(alpha_results)
@@ -233,6 +235,7 @@ print(f"\nThe ideal value of alpha is {ideal_ccp_alpha}")
 """# Build and evaluate classification tree"""
 
 scores = []
+model_pruned = DecisionTreeClassifier(criterion='gini', ccp_alpha=ideal_ccp_alpha, random_state=42)
 for i in range(0, 100):
   model_pruned = DecisionTreeClassifier(criterion='gini', ccp_alpha=ideal_ccp_alpha, random_state=42)
   model_pruned.fit(X_train, y_train)
@@ -246,6 +249,7 @@ print(scores.describe())
 
 from sklearn.metrics import plot_confusion_matrix
 plot_confusion_matrix(model_pruned, X_test, y_test)
+plt.show()
 
 dot_data = StringIO()
 print(column_names)
@@ -255,3 +259,6 @@ export_graphviz(model_pruned ,out_file=dot_data, filled=True, rounded=True,
 graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
 graph.write_png("tree_optimized_prunning.png")
 tree.plot_tree(model_pruned)
+plt.show()
+
+print("\nThe End")
