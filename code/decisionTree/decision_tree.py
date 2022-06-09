@@ -45,8 +45,8 @@ print(round((((df.isnull().sum()).sum() / np.product(df.shape)) * 100), 2))
 """We recommend to reduce the database for testing purposes. Please uncomment the code below to reduce the dataset, 
 otherwise the time required to run the code increases considerably or the computer might crushed. We recommend to run 
 the complete dataset in google-CoLab since it provides more computer power. """
-df = df.loc[0:2500]
-print(f"Reduced dataset: {df.shape}")
+# df = df.loc[0:2500]
+# print(f"Reduced dataset: {df.shape}")
 ########################################################################################
 
 X = df.drop(columns=['HeartDiseaseorAttack'])
