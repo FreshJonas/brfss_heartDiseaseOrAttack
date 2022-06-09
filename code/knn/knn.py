@@ -30,8 +30,9 @@ print(round((((df.isnull().sum()).sum() / np.product(df.shape)) * 100), 2))
 """**We recommend to reduce the database for testing purposes. Please uncomment the code below to reduce the dataset,
 otherwise the time required to run the code increases considerably or the computer might crushed. We recommend to run
 the complete dataset in google-CoLab since it provides more computer power.**"""
-df = df.loc[0:2500]
-print(df.shape)
+#df = df.loc[0:2500]
+#print(df.shape)
+
 """**Split Data**"""
 
 X = df.drop(columns=['HeartDiseaseorAttack'])
@@ -54,13 +55,15 @@ print(X_train.shape)
 
 """# KNN
 
-We have previously tested the performance with StandardScaler() and MinMaxScaler() and we have obtained, that the performance is very similar or identical. Since the data has been already scaled with MinMaxScaler() for the KNN-Imputer, we will not scaled the data again here.
+We have previously tested the performance with StandardScaler() and MinMaxScaler() and we have obtained, 
+that the performance is very similar or identical. Since the data has been already scaled with MinMaxScaler() for 
+the KNN-Imputer, we will not scaled the data again here.
 """
 
 
-"""Note: We have chosen a range of odd numbers for the k, to try to avoid "ties" as much as possible.
+"""
 
-### optimize KNN with RandomizedSearchCV
+### optimize KNN with GridSearchCV
 
 We tried to optimized the KNN using RandomizedSearchCV. We will try to get the best number of neighbors.
 """
@@ -109,7 +112,6 @@ print("Average Accuracy Score is: ", np.mean(accuracy_list))
 from sklearn.metrics import plot_confusion_matrix
 plot_confusion_matrix(knn, X_test, y_test)
 print(plt.show())
-"""We have gotten a relatively high number of false negatives. """
 
 collector = []
 for k in range(1, 20, 2):
@@ -128,4 +130,4 @@ accuracy_scores_minMax_df = pd.DataFrame(collector)
 plt.plot(accuracy_scores_minMax_df['k'], accuracy_scores_minMax_df['accuracy'])
 plt.grid(True)
 print(plt.show())
-print("The End")
+print("\nThe End")
