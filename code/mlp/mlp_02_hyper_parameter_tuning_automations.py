@@ -42,7 +42,7 @@ X = df.drop('HeartDiseaseorAttack', axis=1)
 y = df.HeartDiseaseorAttack
 
 # Performing under sampling since dataset is heavily unbalanced towards people with no heart disease or attack
-rus = RandomUnderSampler()
+rus = RandomUnderSampler(random_state=1)
 X_resampled, y_resampled = rus.fit_resample(X, y)
 
 # split into train and test
