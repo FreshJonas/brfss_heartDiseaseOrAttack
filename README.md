@@ -12,4 +12,4 @@ The code for each model is in the corresponding folder.
 You might need to install the following libraries: 
 * six
 * pydotplus: it provides a Python Interface to Graphviz's Dot language, which we use to create graphs (decision-tree). 
-* graphviz. You might have to include the Graphviz executables are on your system's PATH
+* graphviz. You might have to include the Graphviz executables on your system's PATH
