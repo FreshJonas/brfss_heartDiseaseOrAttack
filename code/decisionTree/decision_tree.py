@@ -30,7 +30,7 @@ collabs_imputed_path = r'/content/drive/MyDrive/Colab Notebooks/DS/2015_cleaned_
 # Path to dataset with dropped NaN values
 local_dropped_path = r'../../data/2015_cleaned_droppedNaN.csv'
 # Path to dataset with imputed NaN values
-local_imputed_path = '../../data/2015_cleaned_imputedNaN.csv'
+local_imputed_path = '../../pics/2015_cleaned_imputedNaN.csv'
 df = pd.read_csv(local_dropped_path)
 
 print(df.head())
