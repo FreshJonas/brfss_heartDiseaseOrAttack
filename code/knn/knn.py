@@ -1,5 +1,4 @@
 import pandas as pd
-import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 from imblearn.under_sampling import RandomUnderSampler
@@ -7,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV
-
+from sklearn.metrics import balanced_accuracy_score
 """**Upload Data**
 
 We upload the data in a pandas dataframe.
@@ -30,8 +29,8 @@ print(round((((df.isnull().sum()).sum() / np.product(df.shape)) * 100), 2))
 """**We recommend to reduce the database for testing purposes. Please uncomment the code below to reduce the dataset,
 otherwise the time required to run the code increases considerably or the computer might crushed. We recommend to run
 the complete dataset in google-CoLab since it provides more computer power.**"""
-#df = df.loc[0:2500]
-#print(df.shape)
+df = df.loc[0:2500]
+print(df.shape)
 
 """**Split Data**"""
 
@@ -96,13 +95,13 @@ metric = random_search.best_params_.get('metric')
 accuracy_list =[]
 for i in range(100):
 
-  knn = KNeighborsClassifier(n_neighbors=best_k, metric=metric)
+  knn = KNeighborsClassifier(n_neighbors=best_k, metric = metric)
   knn.fit(X_train, y_train)
   prediction = knn.predict(X_test)
-  accuracy = accuracy_score(y_test, prediction)
-  accuracy_list.append(accuracy)
 
-print("Average Accuracy Score is: ", np.mean(accuracy_list))
+  balanced_accuracy_score(y_test, prediction)
+  accuracy_list.append(balanced_accuracy_score(y_test, prediction))
+print("Balanced Accuracy Score is: ", np.mean(accuracy_list))
 
 """# Other Evaluations
 
