@@ -168,7 +168,7 @@ Decision-trees classifiers in sklearn use the following parameters for pruning:
 For our tree, we will directly use ccp (cost complexity pruning), which is a post-pruning technique. The subtree with 
 the largest cost complexity that is smaller than ccp_alpha will be chosen. 
 
-The higher alpha is, the more the tree is prunned. An alpha of 0 will not preformed prunning (will leave just a node 
+The higher alpha is, the more the tree is pruned. An alpha of 0 will not preformed pruning (will leave just a node 
 in the tree).
 """
 
@@ -191,7 +191,7 @@ for alpha in ccp_alphas:
 The blue line is the accuracy for the training dataset. 
 The yellow line is the accuracy for the test dataset. 
 
-As we prune (alpha gets bigger) we see that the trainig accuracy decreases but the accuracy of testing increase. 
+As we prune (alpha gets bigger) we see that the training accuracy decreases but the accuracy of testing increase. 
 """
 
 train_scores = [model.score(X_train, y_train) for model in model_alphas]
@@ -230,7 +230,7 @@ plt.show()
 print("\nAlpha Results are")
 print(alpha_results)
 
-"""We could repeat the operation for a value of alpha betwwen 0.001 and 0.0025. But since the accuracy does not seem 
+"""We could repeat the operation for a value of alpha between 0.001 and 0.0025. But since the accuracy does not seem 
 to increase that much, we have decided assign 0.002 to alpha. """
 
 max_index = alpha_results['mean_accuracy'].idxmax()
@@ -247,7 +247,7 @@ for i in range(0, 100):
   predictions = model_pruned.predict(X_test)
   scores.append(accuracy_score(y_test, predictions))
 average_score = sum(scores) / len(scores)
-print(f'\nAverage Accuracy score for prunned tree is {average_score} and its statistic is: ')
+print(f'\nAverage Accuracy score for pruned tree is {average_score} and its statistic is: ')
 print('difference between max and mit value is ', max(scores) - min(scores))
 scores = pd.Series(scores)
 print(scores.describe())
@@ -262,7 +262,7 @@ export_graphviz(model_pruned ,out_file=dot_data, filled=True, rounded=True,
                 special_characters=True, class_names=clases_names, feature_names=column_names)
 
 graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
-graph.write_png("tree_optimized_prunning.png")
+graph.write_png("tree_optimized_pruning.png")
 tree.plot_tree(model_pruned)
 plt.show()
 
