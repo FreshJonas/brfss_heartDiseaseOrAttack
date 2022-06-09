@@ -5,8 +5,8 @@ Please run the files in the following order:
 2. 02_feature_influence.py
 3. 03_check_target_balancing.py
 
-This 3 files are designed to preprocess the data and generate the datasets that will be used by the models. 
-Each student has developed a model. The code for each model is in the corresponding folder. 
+This 3 files are designed to preprocess the data and generate the datasets that will be used by the models.
+The code for each model is in the corresponding folder. 
 
 ## Installation
 You might need to install the following libraries: 
