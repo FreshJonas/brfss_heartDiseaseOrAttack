@@ -79,7 +79,8 @@ In this section we analyze if the method to calculate impurities (gini or entrop
 gini_scores = []
 entropy_scores = []
 
-for i in range (0, 100): 
+for i in range (0, 100):
+  X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2)
   gini_model = DecisionTreeClassifier(criterion='gini', random_state=1)
   entropy_model = DecisionTreeClassifier(criterion='entropy', random_state=1)
 
@@ -242,6 +243,7 @@ print(f"\nThe ideal value of alpha is {ideal_ccp_alpha}")
 scores = []
 model_pruned = DecisionTreeClassifier(criterion='gini', ccp_alpha=ideal_ccp_alpha, random_state=1)
 for i in range(0, 100):
+  X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2)
   model_pruned = DecisionTreeClassifier(criterion='gini', ccp_alpha=ideal_ccp_alpha, random_state=1)
   model_pruned.fit(X_train, y_train)
   predictions = model_pruned.predict(X_test)
