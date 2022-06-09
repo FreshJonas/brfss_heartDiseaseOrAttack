@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import balanced_accuracy_score
 from sklearn import tree
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -30,8 +30,8 @@ collabs_imputed_path = r'/content/drive/MyDrive/Colab Notebooks/DS/2015_cleaned_
 # Path to dataset with dropped NaN values
 local_dropped_path = r'../../data/2015_cleaned_droppedNaN.csv'
 # Path to dataset with imputed NaN values
-local_imputed_path = '../../data/2015_cleaned_imputedNaN.csv'
-df = pd.read_csv(local_imputed_path)
+local_imputed_path = '../../pics/2015_cleaned_imputedNaN.csv'
+df = pd.read_csv(local_dropped_path)
 
 print(df.head())
 
@@ -79,9 +79,10 @@ In this section we analyze if the method to calculate impurities (gini or entrop
 gini_scores = []
 entropy_scores = []
 
-for i in range (0, 100): 
-  gini_model = DecisionTreeClassifier(criterion='gini', random_state=42)
-  entropy_model = DecisionTreeClassifier(criterion='entropy', random_state=42)
+for i in range (0, 100):
+  X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2)
+  gini_model = DecisionTreeClassifier(criterion='gini', random_state=1)
+  entropy_model = DecisionTreeClassifier(criterion='entropy', random_state=1)
 
   gini_model.fit(X_train, y_train)
   entropy_model.fit(X_train, y_train)
@@ -89,8 +90,8 @@ for i in range (0, 100):
   gini_predictions = gini_model.predict(X_test)
   entropy_prediction = entropy_model.predict(X_test)
 
-  gini_scores.append(accuracy_score(y_test, gini_predictions))
-  entropy_scores.append(accuracy_score(y_test, entropy_prediction))
+  gini_scores.append(balanced_accuracy_score(y_test, gini_predictions))
+  entropy_scores.append(balanced_accuracy_score(y_test, entropy_prediction))
 
 avg_scores_gini = sum(gini_scores) / len(gini_scores)
 avg_scores_entropy = sum(entropy_scores) / len(entropy_scores)
@@ -108,7 +109,7 @@ print(entropy_statistics.describe())
 
 """Tree plot for gini"""
 
-gini_model = DecisionTreeClassifier(criterion='gini', random_state=42)
+gini_model = DecisionTreeClassifier(criterion='gini', random_state=1)
 gini_model.fit(X_train, y_train)
 
 tree.plot_tree(gini_model)
@@ -130,7 +131,7 @@ graph.write_png("tree_gini_not_optimized.png")
 
 """Tree plot for entropy"""
 
-entropy_model = DecisionTreeClassifier(criterion='entropy', random_state=42)
+entropy_model = DecisionTreeClassifier(criterion='entropy', random_state=1)
 entropy_model.fit(X_train, y_train)
 tree.plot_tree(entropy_model)
 dot_data = StringIO()
@@ -172,7 +173,7 @@ The higher alpha is, the more the tree is pruned. An alpha of 0 will not preform
 in the tree).
 """
 
-model = DecisionTreeClassifier(criterion='gini', random_state=42)
+model = DecisionTreeClassifier(criterion='gini', random_state=1)
 
 """We create a list of alpha values to be tested in the tree model. """
 
@@ -182,7 +183,7 @@ print(ccp_alphas)
 
 model_alphas = []
 for alpha in ccp_alphas: 
-  model = DecisionTreeClassifier(ccp_alpha=alpha, random_state=42)
+  model = DecisionTreeClassifier(ccp_alpha=alpha, random_state=1)
   model.fit(X_train, y_train)
   model_alphas.append(model)
 
@@ -217,7 +218,7 @@ print(ccp_alphas)
 from sklearn.model_selection import cross_val_score
 stat_values = []
 for alpha in ccp_alphas:
-  model = DecisionTreeClassifier(ccp_alpha=alpha, random_state=42)
+  model = DecisionTreeClassifier(ccp_alpha=alpha, random_state=1)
   scores = cross_val_score(model, X_train, y_train, cv=5)
   stat_values.append([alpha, np.mean(scores), np.std(scores)])
 
@@ -240,12 +241,13 @@ print(f"\nThe ideal value of alpha is {ideal_ccp_alpha}")
 """# Build and evaluate classification tree"""
 
 scores = []
-model_pruned = DecisionTreeClassifier(criterion='gini', ccp_alpha=ideal_ccp_alpha, random_state=42)
+model_pruned = DecisionTreeClassifier(criterion='gini', ccp_alpha=ideal_ccp_alpha, random_state=1)
 for i in range(0, 100):
-  model_pruned = DecisionTreeClassifier(criterion='gini', ccp_alpha=ideal_ccp_alpha, random_state=42)
+  X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2)
+  model_pruned = DecisionTreeClassifier(criterion='gini', ccp_alpha=ideal_ccp_alpha, random_state=1)
   model_pruned.fit(X_train, y_train)
   predictions = model_pruned.predict(X_test)
-  scores.append(accuracy_score(y_test, predictions))
+  scores.append(balanced_accuracy_score(y_test, predictions))
 average_score = sum(scores) / len(scores)
 print(f'\nAverage Accuracy score for pruned tree is {average_score} and its statistic is: ')
 print('difference between max and mit value is ', max(scores) - min(scores))
