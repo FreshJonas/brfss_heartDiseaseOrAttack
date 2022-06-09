@@ -148,7 +148,9 @@ graph.write_png("tree_entropy_not_optimized.png")
 
 """**Conclusion**
 
-Entropy seems to have a better performance for this particular dataset. However, the gini criterion is faster because it is less computationally expensive. With a really big dataset (like our dataset) it might not be worth the time invested in training when using the entropy criterion. 
+Entropy seems to have a better performance for this particular dataset. However, the gini criterion is faster because 
+it is less computationally expensive. With a really big dataset (like our dataset) it might not be worth the time 
+invested in training when using the entropy criterion. 
 
 Moreover both trees seem overfitted, therefore we will analyze pruning in the next section.
 
@@ -163,9 +165,11 @@ Decision-trees classifiers in sklearn use the following parameters for pruning:
 * min_samples_leaf
 * min_impurity_decrease
 
-For our tree, we will directly use ccp (cost complexity pruning), which is a post-pruning technique. The subtree with the largest cost complexity that is smaller than ccp_alpha will be chosen. 
+For our tree, we will directly use ccp (cost complexity pruning), which is a post-pruning technique. The subtree with 
+the largest cost complexity that is smaller than ccp_alpha will be chosen. 
 
-The higher alpha is, the more the tree is prunned. An alpha of 0 will not preformed prunning (will leave just a node in the tree).
+The higher alpha is, the more the tree is prunned. An alpha of 0 will not preformed prunning (will leave just a node 
+in the tree).
 """
 
 model = DecisionTreeClassifier(criterion='gini', random_state=42)
@@ -226,7 +230,8 @@ plt.show()
 print("\nAlpha Results are")
 print(alpha_results)
 
-"""We could repeat the operation for a value of alpha betwwen 0.001 and 0.0025. But since the accuracy does not seem to increase that much, we have decided assign 0.002 to alpha. """
+"""We could repeat the operation for a value of alpha betwwen 0.001 and 0.0025. But since the accuracy does not seem 
+to increase that much, we have decided assign 0.002 to alpha. """
 
 max_index = alpha_results['mean_accuracy'].idxmax()
 ideal_ccp_alpha = alpha_results['alpha'][max_index]
